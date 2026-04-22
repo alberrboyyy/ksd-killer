@@ -1,0 +1,88 @@
+@layout()
+<div class="app-shell" x-data="navApp">
+  {{-- Unified Header --}}
+  <div class="app-header">
+    <button class="header-btn" @click="toggleDrawer()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    
+    <div class="header-center">
+      <div class="floor-stats">
+        <span class="floor-stat"><span class="dot free"></span> {{ tables.filter(t => t.status === 'free').length }} libres</span>
+        <span class="floor-stat"><span class="dot occupied"></span> {{ tables.filter(t => t.status !== 'free').length }} occupées</span>
+      </div>
+    </div>
+    
+    <div style="position: relative;">
+      <button class="user-avatar" @click="toggleProfile()">
+        {{ auth.user.username.substring(0, 2).toUpperCase() }}
+      </button>
+      
+      {{-- Profile Dropdown --}}
+      <div class="profile-dropdown" x-show="profileOpen" @click.outside="profileOpen = false" x-transition x-cloak>
+        <div class="dropdown-header">
+          <div class="name">{{ auth.user.displayName }}</div>
+          <div class="role">{{ auth.user.role }}</div>
+        </div>
+        <button class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          Se déconnecter
+        </button>
+        <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display:none;">
+          {{ csrfField() }}
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {{-- Drawer Overlay & Menu --}}
+  <div class="drawer-overlay" x-show="drawerOpen" @click="drawerOpen = false" x-transition.opacity x-cloak></div>
+  <div class="drawer" x-show="drawerOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" x-cloak>
+    <div class="drawer-header">
+      <h2>KSD-Killer</h2>
+    </div>
+    <div class="drawer-nav">
+      <a href="{{ route('floor') }}" class="drawer-item {{ request.matchesRoute('floor') ? 'active' : '' }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        Plan de salle
+      </a>
+      <a href="{{ route('kitchen.display') }}" class="drawer-item {{ request.matchesRoute('kitchen.display') ? 'active' : '' }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+        Cuisine
+      </a>
+      <a href="{{ route('bar.display') }}" class="drawer-item {{ request.matchesRoute('bar.display') ? 'active' : '' }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Bar
+      </a>
+    </div>
+    <div class="drawer-footer" x-data="themeApp">
+      <button class="drawer-item" @click="toggleTheme()" style="width: 100%;">
+        <svg x-show="!isDark" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg x-show="isDark" x-cloak width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <span x-text="isDark ? 'Mode Clair' : 'Mode Sombre'"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="app-content">
+    <a href="{{ route('order.takeaway') }}" class="takeaway-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+      Nouvelle commande emporté
+    </a>
+
+    <div class="table-grid">
+      @each(table in tables)
+        <a
+          href="{{ route('order.show', { tableId: table.id }) }}"
+          class="table-card {{ table.status }}"
+        >
+          <span class="table-number">{{ table.number }}</span>
+          @if(tableOrderMap[table.id])
+            <span class="table-total">{{ Number(tableOrderMap[table.id].totalAmount).toFixed(2) }} CHF</span>
+          @end
+        </a>
+      @end
+    </div>
+  </div>
+</div>
+@end

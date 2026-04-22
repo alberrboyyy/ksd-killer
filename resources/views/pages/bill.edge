@@ -1,0 +1,58 @@
+@layout()
+<div class="app-shell" x-data="billApp({{ js.stringify({ orderId: order.id, total: order.totalAmount }) }})">
+  <div class="order-header">
+    <a href="{{ route('order.show', { tableId: order.tableId }) }}" class="back-btn">←</a>
+    <div class="table-info">
+      <h2>
+        @if(order.takeawayNumber)
+          Emporté #{{ order.takeawayNumber }}
+        @else
+          Table {{ order.table.number }}
+        @end
+      </h2>
+      <span class="meta">Addition</span>
+    </div>
+  </div>
+
+  <div class="app-content">
+    <div class="bill-page">
+      <div class="bill-card">
+        <div class="bill-header">
+          <h2>
+            @if(order.takeawayNumber)
+              Emporté #{{ order.takeawayNumber }}
+            @else
+              Table {{ order.table.number }}
+            @end
+          </h2>
+          <div class="bill-meta">{{ order.guestsCount }} couvert(s) · {{ order.createdAt.toFormat('HH:mm') }}</div>
+        </div>
+
+        <div class="bill-items">
+          @each(item in order.items)
+            <div class="bill-item">
+              <span class="qty">{{ item.quantity }}x</span>
+              <span class="name">{{ item.product?.name || 'Produit' }}</span>
+              <span class="price">{{ (item.quantity * item.unitPrice).toFixed(2) }}</span>
+            </div>
+          @end
+        </div>
+
+        <div class="bill-total">
+          <span>Total</span>
+          <span>{{ Number(order.totalAmount).toFixed(2) }} CHF</span>
+        </div>
+      </div>
+
+      <div class="bill-actions mt-4">
+        <button class="btn btn-green" @click="pay('cash')">
+          Cash
+        </button>
+        <button class="btn btn-primary" @click="pay('card')">
+          Carte
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+@end

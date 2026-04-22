@@ -20,6 +20,8 @@ export default class extends BaseSchema {
         .inTable('categories')
         .onDelete('CASCADE')
 
+      table.string('destination').notNullable()
+
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

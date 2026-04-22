@@ -4,27 +4,63 @@ type ParamValue = string | number | bigint | boolean
 
 export type ScannedRoutes = {
   ALL: {
-    'home': { paramsTuple?: []; params?: {} }
-    'new_account.create': { paramsTuple?: []; params?: {} }
-    'new_account.store': { paramsTuple?: []; params?: {} }
-    'session.create': { paramsTuple?: []; params?: {} }
+    'login': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
-    'session.destroy': { paramsTuple?: []; params?: {} }
+    'logout': { paramsTuple?: []; params?: {} }
+    'floor': { paramsTuple?: []; params?: {} }
+    'order.show': { paramsTuple: [ParamValue]; params: {'tableId': ParamValue} }
+    'order.takeaway': { paramsTuple?: []; params?: {} }
+    'order.bill': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'order.addItem': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'order.removeItem': { paramsTuple: [ParamValue]; params: {'itemId': ParamValue} }
+    'order.updateItemQuantity': { paramsTuple: [ParamValue]; params: {'itemId': ParamValue} }
+    'order.send': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'order.pay': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'order.updateGuests': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'kitchen.display': { paramsTuple?: []; params?: {} }
+    'kitchen.items': { paramsTuple?: []; params?: {} }
+    'kitchen.updateStatus': { paramsTuple: [ParamValue]; params: {'itemId': ParamValue} }
+    'bar.display': { paramsTuple?: []; params?: {} }
+    'bar.items': { paramsTuple?: []; params?: {} }
+    'bar.updateStatus': { paramsTuple: [ParamValue]; params: {'itemId': ParamValue} }
   }
   GET: {
-    'home': { paramsTuple?: []; params?: {} }
-    'new_account.create': { paramsTuple?: []; params?: {} }
-    'session.create': { paramsTuple?: []; params?: {} }
+    'login': { paramsTuple?: []; params?: {} }
+    'floor': { paramsTuple?: []; params?: {} }
+    'order.show': { paramsTuple: [ParamValue]; params: {'tableId': ParamValue} }
+    'order.takeaway': { paramsTuple?: []; params?: {} }
+    'order.bill': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'kitchen.display': { paramsTuple?: []; params?: {} }
+    'kitchen.items': { paramsTuple?: []; params?: {} }
+    'bar.display': { paramsTuple?: []; params?: {} }
+    'bar.items': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
-    'home': { paramsTuple?: []; params?: {} }
-    'new_account.create': { paramsTuple?: []; params?: {} }
-    'session.create': { paramsTuple?: []; params?: {} }
+    'login': { paramsTuple?: []; params?: {} }
+    'floor': { paramsTuple?: []; params?: {} }
+    'order.show': { paramsTuple: [ParamValue]; params: {'tableId': ParamValue} }
+    'order.takeaway': { paramsTuple?: []; params?: {} }
+    'order.bill': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'kitchen.display': { paramsTuple?: []; params?: {} }
+    'kitchen.items': { paramsTuple?: []; params?: {} }
+    'bar.display': { paramsTuple?: []; params?: {} }
+    'bar.items': { paramsTuple?: []; params?: {} }
   }
   POST: {
-    'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
-    'session.destroy': { paramsTuple?: []; params?: {} }
+    'logout': { paramsTuple?: []; params?: {} }
+    'order.addItem': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'order.send': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'order.pay': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+  }
+  DELETE: {
+    'order.removeItem': { paramsTuple: [ParamValue]; params: {'itemId': ParamValue} }
+  }
+  PATCH: {
+    'order.updateItemQuantity': { paramsTuple: [ParamValue]; params: {'itemId': ParamValue} }
+    'order.updateGuests': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'kitchen.updateStatus': { paramsTuple: [ParamValue]; params: {'itemId': ParamValue} }
+    'bar.updateStatus': { paramsTuple: [ParamValue]; params: {'itemId': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

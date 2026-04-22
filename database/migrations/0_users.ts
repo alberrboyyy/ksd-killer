@@ -1,15 +1,16 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'tables'
+  protected tableName = 'users'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('number').notNullable().unique()
-      table.integer('seats').notNullable()
-      table.string('status').notNullable().defaultTo('free') // free, occupied, paid
-      table.boolean('is_virtual').notNullable().defaultTo(false) // true for takeaway, counter, etc.
+      table.string('username').notNullable().unique()
+      table.string('password').notNullable()
+      table.string('display_name').notNullable()
+      table.string('role').notNullable().defaultTo('server') // admin, server, bar
+      table.boolean('is_active').notNullable().defaultTo(true)
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

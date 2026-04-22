@@ -7,19 +7,130 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
-export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
-  $columns = UserSchema.$columns
+export class CategorySchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'mainImageUrl', 'name', 'parentId', 'updatedAt'] as const
+  $columns = CategorySchema.$columns
   @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column()
-  declare email: string
-  @column()
-  declare fullName: string | null
+  declare createdAt: DateTime | null
   @column({ isPrimary: true })
   declare id: number
-  @column({ serializeAs: null })
-  declare password: string
+  @column()
+  declare mainImageUrl: string | null
+  @column()
+  declare name: string
+  @column()
+  declare parentId: number | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+}
+
+export class OrderItemSchema extends BaseModel {
+  static $columns = ['createdAt', 'createdBy', 'id', 'notes', 'orderId', 'productId', 'quantity', 'status', 'unitPrice', 'updatedAt'] as const
+  $columns = OrderItemSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare createdBy: number | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare notes: string | null
+  @column()
+  declare orderId: number
+  @column()
+  declare productId: number | null
+  @column()
+  declare quantity: number
+  @column()
+  declare status: string
+  @column()
+  declare unitPrice: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class OrderSchema extends BaseModel {
+  static $columns = ['createdAt', 'guestsCount', 'id', 'paymentMethod', 'status', 'tableId', 'takeawayNumber', 'totalAmount', 'updatedAt', 'userId'] as const
+  $columns = OrderSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare guestsCount: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare paymentMethod: string | null
+  @column()
+  declare status: string
+  @column()
+  declare tableId: number
+  @column()
+  declare takeawayNumber: number | null
+  @column()
+  declare totalAmount: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number | null
+}
+
+export class ProductSchema extends BaseModel {
+  static $columns = ['categoryId', 'createdAt', 'destination', 'id', 'mainImageUrl', 'name', 'price', 'updatedAt'] as const
+  $columns = ProductSchema.$columns
+  @column()
+  declare categoryId: number | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare destination: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare mainImageUrl: string | null
+  @column()
+  declare name: string
+  @column()
+  declare price: number | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class TableSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'isVirtual', 'number', 'seats', 'status', 'updatedAt'] as const
+  $columns = TableSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare isVirtual: boolean
+  @column()
+  declare number: number
+  @column()
+  declare seats: number
+  @column()
+  declare status: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class UserSchema extends BaseModel {
+  static $columns = ['createdAt', 'displayName', 'id', 'isActive', 'password', 'role', 'updatedAt', 'username'] as const
+  $columns = UserSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare displayName: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare isActive: boolean
+  @column({ serializeAs: null })
+  declare password: string
+  @column()
+  declare role: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare username: string
 }

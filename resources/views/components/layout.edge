@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      AdonisJS - A fully featured web framework for Node.js
-    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#0f0f13" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>KSD-Killer — Caisse</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @stack('dumper')
+    <script>
+      // Apply dark mode immediately to avoid flash
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    </script>
   </head>
   <body>
-    @include('partials/header')
-    <main>
-      @include('partials/flash_alerts')
-      {{{ await $slots.main() }}}
-    </main>
+    {{{ await $slots.main() }}}
   </body>
 </html>
