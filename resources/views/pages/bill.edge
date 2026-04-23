@@ -1,18 +1,9 @@
 @layout()
 <div class="app-shell" x-data="billApp({{ js.stringify({ orderId: order.id, total: order.totalAmount }) }})">
-  <div class="order-header">
-    <a href="{{ route('order.show', { tableId: order.tableId }) }}" class="back-btn">←</a>
-    <div class="table-info">
-      <h2>
-        @if(order.takeawayNumber)
-          Emporté #{{ order.takeawayNumber }}
-        @else
-          Table {{ order.table.number }}
-        @end
-      </h2>
-      <span class="meta">Addition</span>
-    </div>
-  </div>
+  @!component('components/navigation/header', { 
+    title: order.takeawayNumber ? 'Emporté #' + order.takeawayNumber : 'Table ' + order.table.number,
+    backLink: route('order.show', { tableId: order.tableId })
+  })
 
   <div class="app-content">
     <div class="bill-page">
@@ -45,12 +36,8 @@
       </div>
 
       <div class="bill-actions mt-4">
-        <button class="btn btn-green" @click="pay('cash')">
-          Cash
-        </button>
-        <button class="btn btn-primary" @click="pay('card')">
-          Carte
-        </button>
+        @!component('components/ui/button', { text: 'Cash', color: 'green', '@click': 'pay("cash")' })
+        @!component('components/ui/button', { text: 'Carte', color: 'primary', '@click': 'pay("card")' })
       </div>
     </div>
   </div>

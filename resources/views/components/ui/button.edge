@@ -1,0 +1,19 @@
+{{-- 
+  Props:
+  - text: string (button label)
+  - type: 'button' | 'submit' (default: 'button')
+  - color: 'primary' | 'green' | 'orange' | 'danger' | 'outline'
+  - icon: string (optional SVG raw string)
+  - classes: string (optional extra classes)
+  - attrs: any additional attributes (passed via $props.serializeExcept)
+--}}
+<button 
+  type="{{ type || 'button' }}" 
+  class="btn {{ color ? 'btn-' + color : '' }} {{ classes || '' }}"
+  {{{ $props.except(['text', 'type', 'color', 'icon', 'classes']).toAttrs() }}}
+>
+  @if(icon)
+    {{{ icon }}}
+  @end
+  {{ text }}
+</button>

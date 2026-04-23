@@ -1,0 +1,14 @@
+{{-- 
+  Props:
+  - product: Product object
+--}}
+<div
+  class="product-card"
+  @click="addItem($el)"
+  data-product-id="{{ product.id }}"
+  data-product-name="{{ product.name }}"
+  data-product-price="{{ product.price }}"
+>
+  <span class="product-name">{{ product.name }}</span>
+  <span class="product-price">{{ Number(product.price).toFixed(2) }}</span>
+</div>

@@ -1,0 +1,35 @@
+{{-- 
+  Props:
+  - title: string
+  - backLink: string (URL)
+  - auth: Auth object (for avatar)
+--}}
+<div class="app-header">
+  <a href="{{ backLink }}" class="header-btn">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+  </a>
+  <div class="header-center">
+    <h2 class="header-title">{{ title }}</h2>
+  </div>
+  
+  @if(auth && auth.user)
+  <div style="position: relative;">
+    @!component('components/ui/avatar', { user: auth.user, '@click': 'toggleProfile()' })
+    
+    {{-- Profile Dropdown --}}
+    <div class="profile-dropdown" x-show="profileOpen" @click.outside="profileOpen = false" x-transition x-cloak>
+      <div class="dropdown-header">
+        <div class="name">{{ auth.user.displayName }}</div>
+        <div class="role">{{ auth.user.role }}</div>
+      </div>
+      <button class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        Se déconnecter
+      </button>
+      <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display:none;">
+        {{ csrfField() }}
+      </form>
+    </div>
+  </div>
+  @end
+</div>

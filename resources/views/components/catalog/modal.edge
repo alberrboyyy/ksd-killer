@@ -1,0 +1,57 @@
+{{--
+  Props:
+  - categories: Categories array
+--}}
+<div class="catalog-modal" x-show="catalogOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-full" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform translate-y-full" x-cloak>
+  
+  <div class="catalog-header">
+    <button class="header-btn" @click="catalogOpen = false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <h2 class="header-title">Catalogue</h2>
+    <div style="width: 44px;"></div>
+  </div>
+
+  <div class="category-bar">
+    @each(cat in categories)
+      <button
+        class="category-chip"
+        :class="{ active: activeMainCategory === {{ cat.id }} }"
+        @click="activeMainCategory = {{ cat.id }}"
+        x-init="if (activeMainCategory === null) activeMainCategory = {{ cat.id }}"
+      >{{ cat.name }}</button>
+    @end
+  </div>
+
+  <div class="catalog-scroll-area">
+    @each(cat in categories)
+      <div class="main-category-section" x-show="activeMainCategory === {{ cat.id }}">
+        
+        @if(cat.products.length > 0)
+          <div class="catalog-section">
+            @if(cat.children.length > 0)
+              <h3 class="catalog-section-title">Autre</h3>
+            @end
+            <div class="catalog-product-grid">
+              @each(product in cat.products)
+                @!component('components/catalog/product_card', { product })
+              @end
+            </div>
+          </div>
+        @end
+
+        @each(sub in cat.children)
+          <div class="catalog-section">
+            <h3 class="catalog-section-title">{{ sub.name }}</h3>
+            <div class="catalog-product-grid">
+              @each(product in sub.products)
+                @!component('components/catalog/product_card', { product })
+              @end
+            </div>
+          </div>
+        @end
+
+      </div>
+    @end
+  </div>
+</div>

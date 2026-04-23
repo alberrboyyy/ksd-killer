@@ -1,0 +1,8 @@
+{{-- 
+  Props:
+  - status: 'pending' | 'in_progress' | 'ready' | 'served'
+  - text: string (label to display)
+--}}
+<span class="badge {{ status || '' }}" {{{ $props.except(['status', 'text']).toAttrs() }}}>
+  {{ text || '' }}
+</span>

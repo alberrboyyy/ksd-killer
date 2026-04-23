@@ -1,0 +1,12 @@
+{{-- 
+  Props:
+  - user: User object
+  - attrs: any additional attributes (passed via $props.serializeExcept)
+--}}
+<button 
+  class="user-avatar"
+  title="{{ user.displayName }}"
+  {{{ $props.except(['user']).toAttrs() }}}
+>
+  {{ user.username.substring(0, 2).toUpperCase() }}
+</button>
